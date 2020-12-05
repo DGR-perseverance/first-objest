@@ -1,0 +1,53 @@
+server:
+  port: 9080
+  servlet:
+    context-path: /fom/bt
+spring:
+  application:
+    name: pay-bt-service-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: @env-addr@
+        namespace: df089821-3061-4406-8ae3-afffbeaa6e28
+nacos:
+  config:
+    server-addr: @env-addr@
+    data-id: application-config-@env@.yml
+    auto-refresh: true
+    namespace: df089821-3061-4406-8ae3-afffbeaa6e28
+    group: zjgl
+    bootstrap:
+      enable: true
+    type: yaml
+    ext-config[0].dataId: pay-st-@env@.properties
+    ext-config[0].autoRefresh: true
+    ext-config[0].namespace: df089821-3061-4406-8ae3-afffbeaa6e28
+    ext-config[0].group: @env@
+    ext-config[0].type: properties
+
+dubbo:
+  application:
+    metadata-type: local
+  protocol:
+    name : dubbo
+    port: 25001
+  registry:
+    address: @zookeeper-addr@
+  scan:
+    base-packages: com.ryx.fund.pay
+  consumer:
+    check: false
+    timeout: 15000
+    retries: 0
+    cluster: failover
+  provider:
+    timeout: 10000
+    retries: 0
+    cluster: failover
+mybatis:
+  type-aliases-package: com.ryx.fund.pay.api.model.*
+  mapper-locations: classpath:mapper/*.xml
+logging:
+  level:
+    root: info
